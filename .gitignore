@@ -1,3 +1,9 @@
+# Custom
+DataSets/
+FeatureSets/
+Reports/
+Test/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
