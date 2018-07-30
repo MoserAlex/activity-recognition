@@ -57,10 +57,10 @@ features = [
 
   # # if these are specified, only the corresponding value of each feature will be used.
   # Features.absolute,
-  # Features.horizontal,
-  # Features.vertical,
+  Features.horizontal,
+  Features.vertical,
 ]
-nr_of_training_subjects = 3
+nr_of_training_subjects = 40
 test_subject = 5
 sensor_position = SensorPosition.CLOTH_POCKET
 

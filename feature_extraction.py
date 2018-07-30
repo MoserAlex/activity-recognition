@@ -144,9 +144,9 @@ def __energy_amplitude(X: list, fftsize: int, hop: int):
   return feats
 
 def __stft(X: list, fftsize: int, hop: int):
-  w = scipy.hanning(fftsize + 1)[: -1]
   energy_amplitude = list()
 
+  w = scipy.hanning(fftsize + 1)[: -1]
   stft_signal = np.array([np.fft.rfft(w * X[i : i + fftsize]) for i in range(0, len(X) - fftsize, hop)])
 
   for i, val in enumerate(stft_signal):
