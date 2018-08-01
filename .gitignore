@@ -1,5 +1,5 @@
 # Custom
-.rar
+*.rar
 .vscode/
 DataSets/
 FeatureSets/
