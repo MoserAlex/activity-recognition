@@ -10,19 +10,22 @@ g_test_subject = 0
 g_selected_activities = list()
 g_selected_features = list()
 g_sensor_position = SensorPosition.CLOTH_POCKET.value
+g_cluster_size = 256
 
-def setup(nr_of_training_subjects=5, test_subject=0, selected_activities=list(), selected_features=list(), sensor_position=SensorPosition.CLOTH_POCKET):
+def setup(nr_of_training_subjects=5, test_subject=0, selected_activities=list(), selected_features=list(), sensor_position=SensorPosition.CLOTH_POCKET, cluster_size=256):
   global g_nr_of_training_subjects
   global g_selected_activities
   global g_selected_features
   global g_sensor_position
   global g_test_subject
+  global g_cluster_size
 
   g_nr_of_training_subjects = nr_of_training_subjects
   g_test_subject = test_subject
   g_selected_activities = selected_activities
   g_selected_features = selected_features
   g_sensor_position = sensor_position.value
+  g_cluster_size = cluster_size
 
 # ------------------------------------------------------------ #
 #                                                              #
@@ -106,7 +109,7 @@ def __get_file_data(path: str):
 # ----------------------------------------------------------- #
 
 def read_feature_files(root: str, look_for_test_subject=False):
-  root = root + '/' + g_sensor_position
+  root = root + '/' + str(g_cluster_size) + '/' + g_sensor_position
   data = list()
   categories = list()
   file_names = __get_file_names(root)

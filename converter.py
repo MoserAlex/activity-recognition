@@ -5,30 +5,44 @@ import feature_extraction as extractor
 import file_reading as reader
 from enums.sensorPosition import SensorPosition
 
-def start_conversion(sensor_position):
+def start(cluster_sizes=list()):
+  if len(cluster_sizes) == 0:    
+    start_conversion(SensorPosition.CLOTH_POCKET)
+    start_conversion(SensorPosition.TROUSERS_POCKET)
+    start_conversion(SensorPosition.WAIST)
+  else:
+    for fftsize in cluster_sizes:      
+      start_conversion(SensorPosition.CLOTH_POCKET, fftsize)
+      start_conversion(SensorPosition.TROUSERS_POCKET, fftsize)
+      start_conversion(SensorPosition.WAIST, fftsize)
+
+def start_conversion(sensor_position, cluster_size=256):    
   print('Converting data files - {}'.format(sensor_position.value))
   reader.setup(
     sensor_position=sensor_position
   )
   start = time.time()
-  convert_data_to_feature_file('DataSets', sensor_position.value, skip_existing_files=True)
+  writepath = sensor_position.value
+  convert_data_to_feature_file('DataSets', writepath, cluster_size, skip_existing_files=True)
   print(' - finished in {0:.2f} seconds\n'.format(time.time()-start))
 
-def convert_data_to_feature_file(data_root: str, write_directory: str, skip_existing_files=False):  
+def convert_data_to_feature_file(data_root: str, write_directory: str, cluster_size, skip_existing_files=False):  
   subjects = __getFileNames(data_root)
 
   feature_root = 'FeatureSets'
-  write_directory = feature_root + '/' + write_directory + '/'
+  cluster_size_root = feature_root + '/' + str(cluster_size)
+  write_directory = cluster_size_root + '/' + write_directory + '/'
 
   __create_folder(feature_root)
+  __create_folder(cluster_size_root)
   __create_folder(write_directory)
 
   existing_files = os.listdir(write_directory)
 
   for i, subject in enumerate(subjects):
     file_name = subject + '.csv'
-    # if file_name in existing_files:
-    #   continue
+    if file_name in existing_files:
+      continue
 
     print(' -> converting {}. subject: {}'.format(i + 1, subject))
 
@@ -45,7 +59,7 @@ def convert_data_to_feature_file(data_root: str, write_directory: str, skip_exis
         data.append(training_files)
         labels.append(training_labels)
 
-    features, targets = extractor.GetFeatures(data, labels)
+    features, targets = extractor.GetFeatures(data, labels, cluster_size)
     __write_feature_file(write_directory + file_name, features, targets)
 
 def __create_folder(root: str):
@@ -71,6 +85,5 @@ def __write_feature_file(path: str, data: list, targets: list):
       row.insert(0, targets[i])
       writer.writerow(row)
 
-start_conversion(SensorPosition.CLOTH_POCKET)
-start_conversion(SensorPosition.TROUSERS_POCKET)
-start_conversion(SensorPosition.WAIST)
+cluster_sizes = [64, 256, 512]
+start(cluster_sizes)

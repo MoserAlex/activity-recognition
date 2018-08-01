@@ -60,14 +60,15 @@ features = [
   Features.horizontal,
   Features.vertical,
 ]
-nr_of_training_subjects = 40
+nr_of_training_subjects = 44
 test_subject = 5
 sensor_position = SensorPosition.CLOTH_POCKET
+cluster_size=64
 
 
 # Here the execution of the main code starts
 report.start()
-report.setup(nr_of_training_subjects, test_subject, activities, features, sensor_position)
+report.setup(nr_of_training_subjects, test_subject, activities, features, sensor_position, cluster_size)
 
 reader.setup(
   nr_of_training_subjects=nr_of_training_subjects,
@@ -75,6 +76,7 @@ reader.setup(
   selected_activities=activities,
   selected_features=features,
   sensor_position=sensor_position,
+  cluster_size=cluster_size
 )
 
 report.add('\nTraining:')

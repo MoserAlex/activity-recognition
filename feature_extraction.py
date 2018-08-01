@@ -8,7 +8,7 @@ import sys
 g_smoothing_points = 5
 g_sample_size = 64
 
-def GetFeatures(data: list, label: list, selectedFeatures=list()):
+def GetFeatures(data: list, label: list, window_size=64, selectedFeatures=list()):
   features = list()
   targets = list()
 
@@ -20,9 +20,9 @@ def GetFeatures(data: list, label: list, selectedFeatures=list()):
     __smooth_data(horizontal)
     __smooth_data(vertical)
 
-    feats = __calculate_features(magnitudes, selectedFeatures, g_sample_size)
-    h_feats = __calculate_features(horizontal, selectedFeatures, g_sample_size)
-    v_feats = __calculate_features(vertical, selectedFeatures, g_sample_size)
+    feats = __calculate_features(magnitudes, selectedFeatures, window_size)
+    h_feats = __calculate_features(horizontal, selectedFeatures, window_size)
+    v_feats = __calculate_features(vertical, selectedFeatures, window_size)
 
     # combine corresponding features
     feats = np.append(feats, h_feats, axis=0)
