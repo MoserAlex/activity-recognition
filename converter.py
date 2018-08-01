@@ -85,5 +85,10 @@ def __write_feature_file(path: str, data: list, targets: list):
       row.insert(0, targets[i])
       writer.writerow(row)
 
-cluster_sizes = [64, 256, 512]
+cluster_sizes = [
+  64,
+  256,
+  512,
+  1024,
+]
 start(cluster_sizes)
