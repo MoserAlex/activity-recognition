@@ -72,7 +72,7 @@ def __train_knn(X_train: list, y_train: list):
   report.add('K-Nearest Neighbor', indentation=2, end = '', flush=True)
   start = time.time()
 
-  knn = KNeighborsClassifier()
+  knn = KNeighborsClassifier(n_neighbors=10)
   knn_model = knn.fit(X_train, y_train)
 
   global g_knn

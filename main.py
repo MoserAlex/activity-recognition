@@ -81,26 +81,26 @@ features = [
   Features.HJORTH_COMPLEXITY,
 
   # # if these are specified, only the corresponding value of each feature will be used.
-  # Features.absolute,
+  Features.absolute,
   Features.horizontal,
   Features.vertical,
 ]
 positions = [
-  # SensorPosition.CLOTH_POCKET,
+  SensorPosition.CLOTH_POCKET,
   SensorPosition.TROUSERS_POCKET,
-  # SensorPosition.WAIST
+  SensorPosition.WAIST
 ]
 clusters = [
   # 64,
-  # 256,
+  256,
   # 512,
-  1024
+  # 1024,
 ]
 subjects = [
   5,
   # 10,
   # 20,
-  # 44
+  # 44,
 ]
 test_subject = 5
 
