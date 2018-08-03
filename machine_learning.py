@@ -162,7 +162,7 @@ def __test_knn(X_test, targets):
       # con_matrix = confusion_matrix(targets, prediction)
 
 
-      msg = '{}. rbf:           '.format(i + 1)
+      msg = '{}. knn:           '.format(i + 1)
       msg = msg + '{0:.2f}% '.format(accuracy)
       msg = msg + ' k = {}'.format(classifier.n_neighbors)
 
