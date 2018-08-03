@@ -75,10 +75,10 @@ features = [
   Features.MIN_AMPLITUDE,
   Features.VARIANCE,
   Features.STANDARD_DEVIATION,
-  Features.ENERGY_AMPLITUDE,
+  # Features.ENERGY_AMPLITUDE,
   Features.STFT_AMPLITUDE,
-  Features.HJORTH_MOBILITY,
-  Features.HJORTH_COMPLEXITY,
+  # Features.HJORTH_MOBILITY,
+  # Features.HJORTH_COMPLEXITY,
 
   # # if these are specified, only the corresponding value of each feature will be used.
   Features.absolute,
@@ -93,9 +93,9 @@ positions = [
 clusters = [
   # 64,
   # 256,
-  # 512,
+  512,
   # 1024,
-  2048,
+  # 2048,
 ]
 subjects = [
   # 1,
@@ -111,3 +111,8 @@ for p in positions:
   for c in clusters:
     for s in subjects:
       start(s, test_subject, activities, features, p, c)
+
+      # for f in features:
+      #   if f != Features.absolute and f != Features.horizontal and f != Features.vertical:
+      #     feats = [f, Features.absolute, Features.horizontal, Features.vertical]
+      #     start(s, test_subject, activities, feats, p, c)

@@ -114,7 +114,7 @@ def __train_rbf_svm(X_train: list, y_train: list):
   report.add('SVM with RBF Kernel', indentation=2)
 
   C_2d_range = [1, 1e2]
-  gamma_2d_range = [1, 1e1]
+  gamma_2d_range = [1e-1, 1]
   classifiers = list()
   for C in C_2d_range:
     for gamma in gamma_2d_range:
