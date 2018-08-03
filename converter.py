@@ -90,5 +90,6 @@ cluster_sizes = [
   256,
   512,
   1024,
+  2048,
 ]
 start(cluster_sizes)
