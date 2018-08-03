@@ -86,21 +86,22 @@ features = [
   Features.vertical,
 ]
 positions = [
-  SensorPosition.CLOTH_POCKET,
+  # SensorPosition.CLOTH_POCKET,
   SensorPosition.TROUSERS_POCKET,
-  SensorPosition.WAIST
+  # SensorPosition.WAIST
 ]
 clusters = [
-  # 64,
-  256,
+  64,
+  # 256,
   # 512,
   # 1024,
 ]
 subjects = [
-  5,
+  # 1,
+  # 5,
   # 10,
   # 20,
-  # 44,
+  44,
 ]
 test_subject = 5
 

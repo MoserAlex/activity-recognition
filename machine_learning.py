@@ -7,7 +7,7 @@ import time
 import report
 
 g_decision_tree = None
-g_knn = None
+g_knn = list()
 g_linear_svm = None
 g_rbf_svm = list()
 
@@ -69,16 +69,34 @@ def __train_decision_tree(X_train: list, y_train: list):
   report.add('          time = {0:.2f} seconds'.format(time.time()-start))
 
 def __train_knn(X_train: list, y_train: list):
-  report.add('K-Nearest Neighbor', indentation=2, end = '', flush=True)
+  report.add('K-Nearest Neighbor', indentation=2)
   start = time.time()
 
-  knn = KNeighborsClassifier(n_neighbors=10)
-  knn_model = knn.fit(X_train, y_train)
+  neighbors = [11, 13, 15]
+  classifiers = list()
+  for i, k in enumerate(neighbors):
+    print('      {}. knn:  k = {}'.format(i + 1, k), end = '', flush=True)
+    start = time.time()
+
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn_model = knn.fit(X_train, y_train)
+    classifiers.append(knn_model)
+
+    print('  time = {0:.2f} seconds'.format(time.time()-start))
+
+    report.add('{}. knn: k = {}'.format(i + 1, k), indentation=3, end = '', flush=True, in_console=False)
+    space = ' ' * 7
+    if k < 10:
+      space += ' '
+    report.add(space + 'time = {0:.2f} seconds'.format(time.time()-start), in_console=False)
+
+  # knn = KNeighborsClassifier(n_neighbors=5)
+  # knn_model = knn.fit(X_train, y_train)
 
   global g_knn
-  g_knn = knn_model
+  g_knn = classifiers
 
-  report.add('     time = {0:.2f} seconds'.format(time.time()-start))
+  # report.add('     time = {0:.2f} seconds'.format(time.time()-start))
 
 def __train_linear_svm(X_train: list, y_train: list):
   report.add('SVM with Linear Kernel', indentation=2, end = '', flush=True)
@@ -96,7 +114,7 @@ def __train_rbf_svm(X_train: list, y_train: list):
   report.add('SVM with RBF Kernel', indentation=2)
 
   C_2d_range = [1, 1e2]
-  gamma_2d_range = [1e-2, 1e-1, 1]
+  gamma_2d_range = [1, 1e1]
   classifiers = list()
   for C in C_2d_range:
     for gamma in gamma_2d_range:
@@ -132,13 +150,23 @@ def __test_decision_tree(X_test, targets):
     # con_matrix = confusion_matrix(targets, prediction)
 
 def __test_knn(X_test, targets):
-  if g_knn is not None:
-    accuracy = g_knn.score(X_test, targets) * 100
+  if len(g_knn) is not 0:
+    report.add('K-Nearest Neigbor:', indentation=3)
 
-    report.add('K-Nearest Neighbor: {0:.2f}%'.format(accuracy), indentation=3)
+    for i, classifier in enumerate(g_knn):
+      accuracy = classifier.score(X_test, targets) * 100
 
-    # prediction = g_knn.predict(X_test)
-    # con_matrix = confusion_matrix(targets, prediction)
+      # report.add('K-Nearest Neighbor: {0:.2f}%'.format(accuracy), indentation=3)
+
+      # prediction = g_knn.predict(X_test)
+      # con_matrix = confusion_matrix(targets, prediction)
+
+
+      msg = '{}. rbf:           '.format(i + 1)
+      msg = msg + '{0:.2f}% '.format(accuracy)
+      msg = msg + ' k = {}'.format(classifier.n_neighbors)
+
+      report.add(msg, indentation=4)
 
 def __test_linear_svm(X_test, targets):
   if g_linear_svm is not None:
