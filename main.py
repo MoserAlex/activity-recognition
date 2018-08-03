@@ -91,10 +91,11 @@ positions = [
   # SensorPosition.WAIST
 ]
 clusters = [
-  64,
+  # 64,
   # 256,
   # 512,
   # 1024,
+  2048,
 ]
 subjects = [
   # 1,
