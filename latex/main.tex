@@ -1,0 +1,236 @@
+% Select language used in document (ngerman or english). Automatically
+% generated text is translated accordingly.
+% use \selectthesislanguage in body.tex to switch to default language
+
+%\documentclass[ngerman, paper]{mmt} % use for BA1
+\documentclass[english, bachelorthesis]{mmt} % use for BA2
+%\documentclass[ngerman, masterthesis]{mmt} % use for Master thesis
+
+\usepackage{mathptmx}
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{makecell}
+\usepackage[anythingbreaks]{breakurl}
+
+% packages for tables
+\usepackage{multirow}
+\usepackage{booktabs}
+
+\usepackage{amsmath}
+\usepackage[autostyle,german=guillemets]{csquotes}
+
+% moved to cls file. use \selectthesislanguage to switch to default language
+%\usepackage[english,ngerman]{babel}
+
+\usepackage{abbrevs}
+%% the following solves a bug in the abbrevs package, that adds an empty
+%% space after the abbrev
+\makeatletter
+\renewcommand\maybe@space@{%
+  % \@tempswatrue % <= this is in the original
+  \maybe@ictrue % <= this is new
+  \expandafter   \@tfor
+    \expandafter \reserved@a
+    \expandafter :%
+    \expandafter =%
+                 \nospacelist
+                 \do \t@st@ic
+  % \if@tempswa % <= this is in the original
+  \ifmaybe@ic % <= this is new
+    \space
+  \fi
+}
+\makeatother
+%%
+
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+\lstdefinelanguage{JavaScript}{
+  keywords={break, case, catch, continue, debugger, default, delete, do, else, false, finally, for, function, if, in, instanceof, new, null, return, switch, this, throw, true, try, typeof, var, let, const, void, while, with},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  sensitive=true
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+\usepackage[authordate,bibencoding=auto,strict,noibid,backend=biber]{biblatex-chicago}
+\bibliography{bibliography}
+
+%% Add a list of acronyms
+\usepackage{glossaries}
+\makeglossaries
+\input{glossary}
+
+%% Add configuration options
+\include{_configuration}
+
+%% Paper title.
+
+\title{\titlename}
+
+%% This is how authors are specified in the conference style
+
+%% Author 
+\author{ \authorname\\ \scriptsize \authormail \\ \scriptsize 
+\ifmmtlanguagegerman FH Salzburg \else Salzburg University of Applied Sciences \fi
+}
+
+%% A teaser figure can be included as follows, but is not recommended since
+%% the space is now taken up by a full width abstract.
+%\teaser{
+%  \includegraphics[width=1.5in]{sample.eps}
+%  \caption{This can be a teaser image of the thesis.}
+%}
+
+%% Abstract section for paper format.
+\abstract{
+    \ifmmtlanguagegerman 
+        \selectlanguage{ngerman}
+        \input{sections/kurzfassung}
+    \else 
+        \selectlanguage{english}
+        \input{sections/abstract}
+    \fi
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% START OF THE PAPER %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\selectthesislanguage
+
+\pagenumbering{gobble}
+
+ % group open
+\ifmmtpaper 
+\begingroup 
+    % is required because paper template messes with sizes
+    \fontsize{12}{18}\selectfont        
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{5pt plus 2pt minus 1pt}
+    \sectionfont{\fontsize{14}{15}\selectfont}
+\fi
+
+    \input{title}        
+    \onecolumn           
+    
+    \pagenumbering{roman}
+    
+    \newpage
+    \input{affidavit}  % comment out for expose
+
+% group closing
+\ifmmtpaper
+\endgroup
+\fi
+
+\ifmmtpaper\else
+    
+    \newpage
+    \selectlanguage{ngerman}
+    \section*{Kurzfassung}
+    \input{sections/kurzfassung}
+    \ifmmtmasterthesis
+    
+    \vspace*{0.5cm} 
+    \textbf{Schlüsselwörter:~} \keywordsgerman
+    \fi
+    \newpage
+    \selectlanguage{english}
+    \section*{Abstract}
+    \input{sections/abstract}
+    \ifmmtmasterthesis
+        
+    \vspace*{0.5cm} 
+    \textbf{Keywords:~} \keywordsenglish
+    \fi
+    \selectthesislanguage
+    
+    \newpage
+    \tableofcontents
+
+\fi
+
+\mmtcolumnmode % switch back to column formatting of stylesheet
+
+\maketitle % used for paper formatting
+
+\ifmmtpaper\else
+\pagestyle{headings}
+\fi
+\pagenumbering{arabic}
+
+
+\input{body} % the main text
+
+%\input{acknowledgements}
+
+\ifmmtpaper\else % only use the following for thesis format
+
+\newpage
+%\listoffigures
+%\lstlistoflistings
+\listoftables
+
+\newpage
+
+\fi
+
+\printbibliography
+\pagebreak
+\printglossaries
+
+ % group open
+\ifmmtpaper 
+\begingroup 
+    % is required because paper template messes with sizes
+    \fontsize{12}{18}\selectfont        
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{5pt plus 2pt minus 1pt}
+    \sectionfont{\fontsize{14}{15}\selectfont}
+\fi
+
+\newpage
+\onecolumn
+%\input{appendix}
+
+% group closing
+\ifmmtpaper
+\endgroup
+\fi
+
+
+\end{document}

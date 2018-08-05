@@ -1,0 +1,14 @@
+\section{Conclusion}
+\label{section:conclusion}
+
+In conclusion, switching to the \gls{scut-naa} data set and configuring a \gls{svm} with an \gls{rbf} kernel yielded stunning results. By calculating features from a 5 second window of acceleration data, it was possible to reach a 98\% prediction accuracy, which is higher than most studies managed to achieve. Obviously the accuracy drops when shrinking the cluster size. However a quick test shows that even with only half the data, the accuracy still only drops by a margin of 3\% to 95\%. These results are remarkable and have not been expected.
+
+The main question of this study has been whether activity recognition based on a generalized data set can achieve a high level of accuracy and yield reliable results. The answer to that question is most definitely yes. The prediction accuracy of the \gls{svm} with a \gls{rbf} kernel was consistently over 90\% during the last phases of the experiment, often times even higher by a significant margin.
+
+There is still room for improvement though. There are many more features that can be calculated, which might lead to better results. Furthermore trying to find a combination of features that suits an algorithm best was only considered superficially. For example it seems like the \gls{svm} with a \gls{rbf} kernel worked best when being trained with time domain features. This could lead to an interesting investigation.
+
+Furthermore this experiment could be repeated with different data sets for both training and testing, especially when gathered by a smartphone. The question arises of whether a smart phone can be used for real time activity recognition without the need of training. Then applications like the ones mentioned during the introduction in chapter \ref{section:introduction} would be possible.
+
+In future tests, building an offline web application for gathering data will be the main focus. Once the application is able to collect acceleration data in high quality and quantity, the differences between the custom data set and the naturalistic data set of \gls{scut-naa} can be investigated.
+
+\pagebreak

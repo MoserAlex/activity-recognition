@@ -1,0 +1,32 @@
+\section{Utilized Technologies}
+\label{section:technologies}
+
+The following chapter lists the technologies which were used to build the activity recognition application. It takes a closer look at them and describes them in detail for further understanding.
+
+It took two iterations of building a prototype with different technologies before decent results could be obtained. The first attempt had to be discarded for reasons listed below. The second attempt yielded better results, which will be the main focus of the evaluation in chapter \ref{section:results} later on.
+
+\subsection{First Approach}
+
+The first attempt consists of two separate programs. They have very distinct responsibilities and can work independently from each other.
+
+One is a web application used to collect the data from the accelerometer of a mobile phone. It is written in JavaScript, and perceives the phone's movement through listening to simple events. The collected data is then sent to an \gls{api} on a laptop in the same network to store said file.
+
+The second program is built with Accord.NET \autocite[]{accord.net} and written in C\#. The Accord.Net framework is a machine learning framework, developed in C\# for scientific computing in .NET. It offers extensive libraries for signal, audio and video processing. Previous research conducted, that it is frequently used in scientific publications, which is one of the reasons why it is used in this study as well.
+
+The program is designed to read multiple files created by the aforementioned web application and to classify the data. Each file represents an activity and while multiple files can represent the same activity, no file contains data of multiple activities. Various features, like energy, Hjorth mobility or Hjorth complexity, can be extracted from this data. The program then trains a \gls{svm} with the previously mentioned features. After the training is completed, it is capable to make predictions on data, which has not been used to train the algorithm before.
+
+The results vary a lot when trying to predict activities. Sometimes this procedure does not yield any results at all. If the wrong combination of files are used to train the \gls{svm}, the training process will not terminate because it will keep trying to fit the data to a prediction model but is unable to do so. Once it finishes the training, the end results are reasonable when the algorithm was trying to predict activities from the same person. Trying to classify movement data of a person which has not been part of the training set led to a poor recognition rate. The accuracy of the prediction becomes incredibly low. On average the accuracy has been about 1/n where n is the number of possible activities.
+
+There can be a multitude of reasons for this behavior. One could be that the data was not sufficient, because the frequency was too high, too low or the total time over which the activities were recorded was too short. Another reason could be that the cluster size of the data for calculating features was chosen too small. This was another consequence of the short recording time. A more detailed explanation will be elaborated in chapter \ref{section:results}. Ultimately it was decided to discard this attempt and build a new prototype with a different framework and an online available set of acceleration data.
+
+\subsection{Second Approach}
+
+The second attempt consists of only one program. It is a prototype written in Python and built with the Scikit-learn framework \autocite[]{scikit-learn}. This framework is an open source project that provides tools for data mining, data analysis and machine learning. It is heavily built on NumPy \autocite[]{NumPy} and SciPy \autocite[]{SciPy}, two powerful libraries for scientific computing with strong mathematical tools in Python.
+
+This time the program focuses solely on feature extraction and classification algorithms. It reads acceleration samples from files and extracts various different features from them and then uses these to train machine learning algorithms like a decision tree, \gls{knn} or \gls{svm}. These are used to classify data sets, which were not used to train the algorithms, just like in the previous version.
+
+The main difference between the two versions, besides the programming language, is the data set. In contrast to the first iteration, which collects the data through a mobile application, the second one uses an already existing data set called \gls{scut-naa}. The goal when creating this data set was to provide a sophisticated set of acceleration data, since at the time there was no comparable data set publicly available \autocite[]{xue2010naturalistic}.
+
+\textcite[]{xue2010naturalistic} have aimed to produce a more naturalistic set of data. Most studies they looked at worked with data collected in a laboratory. Although these studies have had a high recognition rate, it dropped dramatically when providing the classification algorithm with data from a more naturalistic setting. \textcite[]{foerster1999detection} reported a classification accuracy of up to 95.8\%, which dropped to 66.7\% for data which has not been collected inside a laboratory.
+
+It is a sophisticated data set, which also forms the basis of many other studies like the study "Assessment of Homomorphic Analysis for Human Activity Recognition From Acceleration Signals" of \textcite[]{vanrell2017assessment}. A more detailed description of how the data for \gls{scut-naa} has been gathered will be given in the following chapter.

@@ -1,0 +1,118 @@
+\begin{titlepage}
+
+% check if second advisor exists
+\newcommand{\printsecondadvisor}[1]{%
+  \ifcsname#1\endcsname%
+  \ifmmtlanguagegerman ZweitbetreuerIn: \else Second Advisor: \fi \secondadvisor 
+  \else%
+    
+  \fi%
+}
+
+\ifmmtmasterthesis
+
+    
+    % \begin{center}
+    %     \Huge{ 
+    %     	\textbf{\ifmmtlanguagegerman Masterarbeit \else Master Thesis \fi}
+    %     }
+    % \end{center}
+    
+    \newpage
+    
+    \thispagestyle{empty}
+    
+    \hfill \includegraphics[height=1.5cm]{images/FHSLogo.jpg}
+    
+    \vspace*{2cm}
+    
+    \Large{
+    \titlename
+    
+    \vspace*{1cm}
+    
+    \ifmmtlanguagegerman
+    Masterarbeit zur Erlangung des akademischen Grades
+    \else
+    Master thesis in partial fulfilment of the requirements for\\ the degree of 
+    \fi
+    
+    \vspace*{0.5cm}
+    
+    \textit{Master of Science}
+    }
+    
+    
+    \vspace*{1.5cm}
+    {\large
+    \ifmmtlanguagegerman AuthorIn \else Author \fi: \authorname
+    }
+    \vfill
+    
+    {\normalsize
+    \ifmmtlanguagegerman
+    Vorgelegt am FH-Masterstudiengang MultiMediaTechnology, Fachhochschule Salzburg
+    \else
+    Submitted to the Master degree program MultiMediaTechnology, Salzburg University of Applied Sciences
+    \fi
+    
+    
+    \vspace*{1cm}
+    
+    \ifmmtlanguagegerman BetreuerIn: \else Advisor: \fi
+    \advisor
+    \\    
+    \printsecondadvisor{secondadvisor}
+    
+    \vfill
+    
+    Salzburg, \ifmmtlanguagegerman Österreich, \else Austria, \fi  \thesisdate
+    }
+
+\else % Bachelor thesis title page
+
+    \begin{center}
+    
+    \includegraphics[width=5cm]{images/FHSLogo.jpg}
+
+
+    \vspace*{4cm}
+    
+    \fontsize{20.79}{18pt}{\selectfont        
+    %\Large{
+    	\textit{\textbf{\titlename}}
+    %}
+    }
+    
+    \vspace*{4cm}
+    
+    \fontsize{20.79}{18pt}{%\large{
+    \ifmmtlanguagegerman
+    	\textbf{Bachelorarbeit \ifmmtpaper 1 \else 2 \fi }
+    \else
+        \textbf{Bachelor Thesis \ifmmtpaper 1 \else 2 \fi }
+    \fi
+    }
+    
+    
+    \end{center}
+    
+    \vfill
+    
+    %\begin{tabular}{ll}
+    \ifmmtlanguagegerman AuthorIn: \else Author: \fi  \authorname  \\
+    \ifmmtlanguagegerman BetreuerIn: \else Advisor: \fi \advisor \\
+    \printsecondadvisor{secondadvisor}
+    
+    Salzburg, \ifmmtlanguagegerman Österreich, \else Austria, \fi \thesisdate
+    
+    
+    
+    % uncomment the following 3 lines for an optional lock flag, max. 2 years!
+    %\hfill
+    %\color{red}
+    %\framebox{Sperrvermerk bis 20/01/2012}
+
+\fi
+
+\end{titlepage}

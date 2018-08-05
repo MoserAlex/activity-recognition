@@ -1,0 +1,60 @@
+\section{Feature Extraction}
+\label{section:features}
+
+Since the raw data from the accelerometer can not be processed by the aforementioned classification algorithms, pre-processing the data is an important step of many classification processes. In this case the magnitude of the acceleration of every signal sample is calculated via the Pythagorean theorem. Since this results in losing any kind of directional indicators, the horizontal magnitude and vertical magnitude are calculated as well. This resulted in 3 variations of every feature, an absolute, a horizontal and a vertical version.
+
+Several features can be generated from a subset of size $n$ of the magnitudes. These subsets are often overlapping in the hope that this will result in more similar features. This can also increase the accuracy of each individual feature, since it can be calculated from a bigger subset, while still maintaining the same number of features. Ultimately the aim is to be able to classify data well enough to grant reliable results. As previously mentioned the selection of features best suited for this process depends on the experiment and what kind of classification is sought. The ones that are used and examined in this study are the following:
+
+\begin{itemize}
+    \item Maximum amplitude
+        
+    \item Minimum amplitude
+
+    \item Mean amplitude
+        
+    \item Standard Deviation
+        
+    \item Energy in time domain
+        %\begin{equation}
+        %    \mathrm{F}_{energy}=\sum_{i=1}^{n}x_{i}^{2}
+        %\end{equation}
+    
+    \item Energy in frequency domain
+    
+    \item Hjorth Activity
+
+    \item Hjorth Mobility
+
+    \item Hjorth Complexity
+\end{itemize}
+
+In a given a window including $n$ samples $\{y(t), ..., y(t + n)\}$, the maximum will be the largest value, the minimum the smallest value and the mean amplitude will be the calculated average value $\bar{y}$ of these samples. The standard deviation represents the scattering of the samples from $\bar{y}$ and can be calculated via formula \ref{equation:standard-deviation}.
+
+\begin{equation}
+\label{equation:standard-deviation}
+    \mathrm{Standard Deviation}=\sqrt{\frac{1}{n}\sum^{t}(y(t)-\bar{y})^{2}}
+\end{equation}
+
+The energy is calculated both in the time domain, as well as in the frequency domain. In the time domain, it equals the sum of the squared values of the sample window (\ref{equation:energy}). To get the energy transformed into frequency domain, a \gls{stft} has to be applied first to said sample window.
+
+\begin{equation}
+\label{equation:energy}
+    \mathrm{Energy}=\sum^{t}y(t)^{2}
+\end{equation}
+
+The last three features are the so called Hjorth parameter and have been introduced by \textcite[]{hjorth1970eeg} in "EEG analysis based on time domain properties". The Hjorth Activity (\ref{equation:hjorth-activity}) hereby represents the signal power, the Hjorth Mobility (\ref{equation:hjorth-mobility}) represents the mean frequency and the Hjorth Complexity (\ref{equation:hjorth-complexity}) represents the change in frequency. They are calculated as follows:
+
+\begin{equation}
+\label{equation:hjorth-activity}
+    \mathrm{Activity}=\mathrm{var}(y(t))
+\end{equation}
+
+\begin{equation}
+\label{equation:hjorth-mobility}
+    \mathrm{Mobility}=\sqrt{\frac{\mathrm{var}(\frac{\mathrm{d}y(t)}{\mathrm{d}t})}{\mathrm{var}(y(t))}}
+\end{equation}
+
+\begin{equation}
+\label{equation:hjorth-complexity}
+    \mathrm{Complexity}=\frac{\mathrm{Mobility}(\frac{\mathrm{d}y(t)}{\mathrm{d}t})}{\mathrm{Mobility}(y(t))}
+\end{equation}

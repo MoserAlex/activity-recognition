@@ -1,0 +1,295 @@
+\section{Results}
+\label{section:results}
+The following chapter is focusing on the results received from both experiments. The first experiment did not yield any reasonable results which is why chapter \ref{section:first-results} can not elaborate on such. Instead it will only look at possible reasons, why the experiment didn't work out the way it was supposed to. Afterwards chapter \ref{section:second-results} shows the results of the second prototype and explains different results based on different setups.
+
+
+
+
+\subsection{Results of the First Prototype}
+\label{section:first-results}
+Most of the time the first prototype did not deliver high accuracy during classification. Sometimes it was not even able to start the classification process and the program never terminated. This was due to multiple reasons.
+
+The first reason for the inconsistency was the data set. Since the experimental setup aimed to provide its own data set, this may be prone to be another source of errors. As already mentioned collecting data was tricky, since the participants of the study needed to stay within reach of the network of a laptop. After every completion of an activity, the mobile application sent the data directly to the laptop to store it. This resulted in very small data sets, since participants could not enact an activity over a long period of time. Especially an activity like running proved to be difficult to record. All activities needed to be performed inside which limited the available space.
+
+To get enough data, either the sample frequency needed to be increased, or the participants needed to repeat each activity multiple times. Increasing the frequency seemed inadequate, since an activity could not be performed for longer than 5 to 10 seconds. So the goal was to get multiple recordings of the same activity instead of a higher resolution of one recording. In hindsight this was most likely a mistake. A sampling frequency of 20 Hz seems rather low, when compared to a frequency of 100 Hz as it was used by \textcite{xue2010naturalistic}.
+
+This issue could have been avoided by making the application capable of working offline and synchronizing the data once the mobile phone was connected to the network again. This way activities could have been recorded over a longer period of time and without spatial restrictions. This challenge would have been approached first, if there had not also been a lot of problems during the classification process as well.
+
+After collecting the acceleration data, it needed to be prepared properly, before features could be extracted from it. Since the participants needed to start and to stop the data recording manually, there is unwanted noise at the beginning and the end of such a data file. The test subject needed to put the mobile phone into their pocket and pull it out at the end, respectively. This noise needed to be filtered out, consequently reducing the amount of raw acceleration data per file even more. Because of that the data was even less consistent. Again, this could have been prevented by simply having longer recordings. Alternatively the process of recording could be started remotely by someone else other than the participant.
+
+The next step was to calculate various features. The first prototype incorporated only 3 different features to begin with, the time domain energy, the Hjorth mobility and the Hjorth complexity. It was planned to add more features once the first few tests delivered some reasonable results, as was later the case with the second iteration of this experiment. Unfortunately this prototype had problems with the training of the \gls{svm}. When the training set consisted of features of only one participant and was then cross validated with data from the same person, the accuracy of the prediction was about 95\%. If the algorithm tried to predict the activities of another person, the accuracy dropped considerably. Taking a look at the resulting confusion matrix, it turns out that every possible outcome was equally likely to occur when trying to classify an unknown activity. Having trained the \gls{svm} on only 3 different activities, this means that there is only a 33\% chance of getting the correct prediction.
+
+All of these problems led to the conclusion that restarting the experiment is probably better, than trying to fix these issues in the existing setup. By using a publicly available data set, the sources of error concerning the data set itself can be eliminated. It seems fair to assume that a data set, that is often used in scientific studies, is without major mistakes. As to not run into the same dead ends and pitfalls as before, the decision was made to also switch to a different framework. That is why Scikit-learn was used in the second iteration instead of expanding on the Accord.NET framework again.
+
+
+
+
+\subsection{Results of the Second Prototype}
+\label{section:second-results}
+The web application is no longer used in the second iteration of the experiment and collecting acceleration data is no longer an issue, since the data set \gls{scut-naa} is used. Because of this the prototype solely focuses on feature extraction and classification algorithms. It calculates all the features described in chapter \ref{section:features} and implements the previously mentioned machine learning algorithms of chapter \ref{section:classification}.
+
+Before the main question of this study, whether a generalized set of data can be used to predict activities of a person, can be answered, the best suited setup needs to be found.
+
+In a naive initial approach, all 44 participants are compared. The data set used to calculate the features is the one which was collected by the accelerometer placed in their shirt pocket. It is divided into clusters of 256 samples, which overlap by half that amount, to generate the features. All 27 features of 43 people are used to train 4 different machine learning algorithms. The default parameter of the Scikit-learn framework are used to configure them. They then predict activities of the 44$^{th}$ person. Based on these results the following attempts have then been made to improve the accuracy.
+
+
+\subsubsection{Configuring the Classification Algorithms}
+\label{config:algorithm}
+Which algorithm is best suited for the classification of activities? The ones that have been tested are a decision tree, the \gls{knn} algorithm, a \gls{svm} with a linear kernel and a \gls{svm} with a \gls{rbf} as a kernel function.
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{@{}lcc@{}}
+        \toprule
+         & Cross Validation & Test Subject \\
+        \midrule
+        Decision Tree & 57.99\% & 49.62\% \\
+        \gls{knn} & 89.18\% & 61.41\% \\
+        Linear \gls{svm} & 83.79\% & 73.19\% \\
+        \gls{rbf} & 79.74\% & 61.03\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{Naive Classification}
+    \label{table:naive}
+\end{table}
+
+As can be seen in table \ref{table:naive}, the decision tree yields the worst results. It has been tested simultaneously to the other algorithms with all the different combinations and configurations. Since this trend has continues over the course of the experiment and the other algorithms continuously perform better, it will not be elaborated any further in this chapter.
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{@{}ccc@{}}
+        \toprule
+        k & Cross Validation & Test Subject \\
+        \midrule
+        3 & 90.73\% & 58.17\% \\
+        5 & 90.31\% & 59.32\% \\
+        7 & 89.68\% & 59.70\% \\
+        9 & 89.16\% & 60.65\% \\
+        11 & 88.72\% & 60.27\% \\
+        13 & 88.23\% & 61.03\% \\
+        15 & 87.77\% & 60.08\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{\gls{knn} Classification}
+    \label{table:knn}
+\end{table}
+
+Based on table \ref{table:naive} the \gls{knn} has gotten the best results with 89.18\% during cross validation, but has been more than 10\% less accurate than the linear \gls{svm} when trying to classify new data. So a few iterations with different numbers of considered neighbors are tested. As can be seen in table \ref{table:knn}, the accuracy decreases during cross validation when considering a larger number of neighbors, while it increases during classification of the test subject. Although it is only by a small margin, it is something that will be kept in mind during further testing.
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{@{}lcccccccc@{}}
+        \toprule
+         & & \multicolumn{3}{c}{Cross Validation} & & \multicolumn{3}{c}{Test Subject} \\
+        \cmidrule(lr){3-5} \cmidrule(l){7-9}
+        \multicolumn{1}{l}{C} & & 0.01 & 1 & 100 & & 0.01 & 1 & 100 \\
+        \midrule
+        \multicolumn{1}{c}{\multirow{3}{*}{$\gamma$}} & 0.1 & 64.24\% & 87.63\% & 92.93\% & & 52.09\% & 69.20\% & 70.34\% \\
+        \multicolumn{1}{c}{} & 1 & 57.78\% & 92.53\% & 95.01\% & & 38.97\% & 63.88\% & 64.83\% \\
+        \multicolumn{1}{c}{} & 10  & 26.51\% & 83.68\% & 85.28\% & & 29.28\% & 39.73\% & 40.49\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{\gls{rbf} Kernel Classification}
+    \label{table:rbf}
+\end{table}
+
+The linear \gls{svm} has yielded the best outcomes during classification of the test subject with 73.19\%. Trying to bring the accuracy of the \gls{svm} with the \gls{rbf} kernel closer to that result, 9 different combinations of $C\in\{0.01, 1, 100\}$ and $\gamma\in\{0.1, 1, 10\}$ are observed. According to the table \ref{table:rbf} choosing a $C$ of 1 or 100 and a $\gamma$ of 0.1 or 1 will result in the highest accuracy.
+
+
+\subsubsection{Choosing Sensor Position}
+The next step in improving the accuracy of the classification was choosing the correct data set. \gls{scut-naa} offers acceleration data collected from accelerometer placed at three different positions on the participants body. With the data from the sensor placed in the shirt pocket of the person the results shown in table \ref{table:naive}, \ref{table:knn} and \ref{table:rbf} were generated. In order to see whether using data from the sensor on the waist or inside the trouser pocket yields better results, the most promising parameter found in \ref{config:algorithm} are used to train and test each algorithm with these two data sets. Table \ref{table:sensor} represents a comparison of the predictability of the activities.
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{@{}lccccccc@{}}
+        \toprule
+         & \multicolumn{3}{c}{Cross Validation} & & \multicolumn{3}{c}{Test Subject} \\
+        \cmidrule(lr){2-4} \cmidrule(l){6-8} 
+         & Shirt & Trouser & Waist &  & Shirt & Trouser & Waist \\
+        \midrule
+        \gls{knn}        & 88.23\% & 91.41\% & 89.41\% & & 61.03\% & 78.09\% & 61.41\% \\
+        linear \gls{svm} & 83.79\% & 82.80\% & 84.47\% & & 73.19\% & 83.75\% & 84.41\% \\
+        \gls{rbf}        & 92.93\% & 94.01\% & 92.17\% & & 70.34\% & 75.97\% & 80.61\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{Sensor Positioning}
+    \label{table:sensor}
+\end{table}
+
+While the differences are not big during cross validation, they are significant when testing the algorithm with a different person. The greatest discrepancy showed the \gls{knn} algorithm. When tested with data from the shirt pocket or the waist, it only reached an accuracy of 61\%, while it increased to 78\% by using the data from the trouser pocket.
+
+The data from the shirt pocket yielded the worst results for all three algorithms. This is probably due to the lack of distinct movements from the upper body. When a sensor is placed in a trouser pocket, it recognizes the vertical movement of the thigh and experiences rotation to some extend.
+The sensor fixated at the waist is less efficient in recognizing vertical movement, however it is able to record the movement of the hips, which has a unique movement on its own. The position in the shirt pocket on the other hand does not offer any clear movement patterns, as the upper body usually does not move as much as the thigh or hip does when performing everyday activities.
+
+For the \gls{svm} with a \gls{rbf} kernel the data from the waist worked best at 80.61\% and while it does so by a significant margin, the data from the trouser pocket works a lot better for the \gls{knn} classification. That is why the data set collected by the sensor in the trouser pocket is used for further testing.
+
+
+\subsubsection{Cluster Size}
+The cluster size from which the features get calculated is very important as well. If it is too small, not enough information can be stored inside a feature. If it is too big, there might not be enough feature vectors to train the algorithm. Therefore four feature sets of different cluster sizes are generated. The number of samples per cluster are 256, 512, 1024 and 2048.
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{@{}lccccccccc@{}}
+        \toprule
+         & \multicolumn{4}{c}{Cross Validation} & & \multicolumn{4}{c}{Test Subject} \\
+        \cmidrule(lr){2-5} \cmidrule(l){7-10} 
+         & 256 & 512 & 1024 & 2048 & & 256 & 512 & 1024 & 2048 \\
+        \midrule
+        \gls{knn}        & 91.41\% & 92.47\% & 90.83\% & 79.69\% &  & 78.09\% & 81.52\% & 82.68\% & 83.33\% \\
+        linear \gls{svm} & 82.80\% & 86.30\% & 85.69\% & 84.15\% &  & 83.75\% & 88.04\% & 85.83\% & 81.48\% \\
+        \gls{rbf}        & 94.01\% & 96.09\% & 97.06\% & 92.19\% &  & 75.97\% & 84.42\% & 89.76\% & 87.04\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{Cluster Size Accuracy}
+    \label{table:cluster}
+\end{table}
+
+As can be seen in table \ref{table:cluster} the accuracy keeps increasing as the cluster size grows. For the linear \gls{svm} it peaks when the cluster size is close to 512. The \gls{svm} with the \gls{rbf} kernel it also achieves the highest accuracy between 512 and 1024, as can also be seen during cross validation. While the \gls{knn} algorithms seems to steadily improve by enlarging the cluster size, the cross validation also suggests that its peak lies at 512 samples per feature.
+
+The cluster size can not be expanded to an arbitrary high amount. If the cluster size is too big, not enough features are present to train the algorithm. This could even result in not getting a single feature vector, if the data does not contain enough samples. This is not an issue when gathering training data, since you can make sure the participant performs an activity long enough. However it can become an issue, when the sensor is gathering data from a test subject in their daily life. 2048 samples at a frequency of 100 Hz already equals 20 seconds of movement. This is very unrealistic when the person is not actively training, like climbing stairs for example. It can also lead to more overlapping of activities within a cluster, since the test person is not going to tell the mobile application that he or she is performing a new activity, as that would defy the purpose of such an application.
+
+As already mentioned, choosing a smaller cluster size can result in the feature not being able to present enough information of a movement. Choosing a small cluster of 64 samples results in an accuracy of 74\%-87\% during cross validation, depending on the algorithm, and dropped to 72\% all together when trying to classify another person. While this cluster size still seems be good enough for classification, a significant drop in accuracy is already noticeable.
+
+In the continuation of the experiment a cluster size of 512 is used for further testing. Five seconds of data seems reasonable to combine to classify the acceleration data. Most of the time five seconds will cover a full period of a movement, like taking two steps during walking, running or climbing stairs. Classification of features with this cluster size yielded the best results during cross validation, and demonstrated high accuracy during testing as well compared to the other cluster sizes.
+
+
+\subsubsection{Selecting Features}
+Selecting the correct features to compare for teaching an machine learning algorithm is an important part of any classification application. Using too many features will increase the computation time. This is especially a problem, if an application needs to calculate features on the fly for live monitoring. On the other hand generating too few will lessen the accuracy and the prediction probability. Choosing the wrong combination of features might also result in lesser accuracy than expected, since the features might express similar characteristics and are therefore redundant.
+
+\begin{table}
+    \centering
+    \begin{tabular}{lccccccc}
+        \toprule
+         & \multicolumn{3}{c}{Cross Validation} &  & \multicolumn{3}{c}{Test Subject} \\
+        \cline{2-4} \cline{6-8} & \gls{knn} & \gls{svm} & \gls{rbf} &  & \gls{knn} & \gls{svm} & \gls{rbf} \\
+        \midrule
+        Mean               & 68.61\% & 43.85\% & 66.14\% &  & 44.93\% & 51.09\% & 74.64\% \\
+        Maximum            & 64.38\% & 55.59\% & 64.36\% &  & 59.42\% & 59.06\% & 61.96\% \\
+        Minimum            & 63.89\% & 51.72\% & 61.00\% &  & 55.07\% & 48.19\% & 61.23\% \\
+        Standard Deviation & 76.27\% & 65.16\% & 70.10\% &  & 53.62\% & 68.12\% & 59.06\% \\
+        Energy             & 60.74\% & 36.24\% & 59.08\% &  & 47.46\% & 59.78\% & 56.16\% \\
+        \gls{stft}         & 65.76\% & 37.01\% & 61.59\% &  & 46.74\% & 39.13\% & 57.61\% \\
+        Hjorth Activity    & 68.99\% & 49.17\% & 63.85\% &  & 47.46\% & 44.93\% & 59.06\% \\
+        Hjorth Mobility    & 65.59\% & 57.59\% & 61.51\% &  & 44.93\% & 44.20\% & 44.93\% \\
+        Hjorth Complexity  & 53.38\% & 48.06\% & 52.66\% &  & 50.00\% & 46.74\% & 54.35\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{Single Feature Accuracy}
+    \label{table:features}
+\end{table}
+
+Table \ref{table:features} displays the prediction accuracy, when using only a single feature to predict activities. The accuracy ranges from 74.64\% at its maximum all the way down to 36.24\%. This shows that using a single feature is not sufficient and instead a selection needs to be made.
+
+Up until now, every test has been trained by using all 9 features. The results of the cross validation from table \ref{table:features} can give an indication as to which are the least distinctive features for each algorithm. For example, the prediction accuracy for a \gls{svm} with a \gls{rbf} kernel does not change, when ignoring the energy in time and frequency domain, the Hjorth mobility and the Hjorth complexity. It still predicts 84\% of the test persons activities correctly. The \gls{knn} on the other hand does not seem to need the minimum amplitude, the energy in time domain and the Hjorth complexity and still reaches an accuracy of 80\%. Overall though these features seem to compliment each other profoundly, as all three classification algorithms still reach the highest accuracy when being trained with all 9 of them.
+
+Another important factor that needs to be considered is whether to use the directional components of each feature. Since all features are calculated from the magnitude of the signal, which is calculated via the Pythagorean theorem, they loose all of their directional characteristics. So by additionally calculating a horizontal and a vertical value of each feature, the number of features increases to 27. Table \ref{table:components} shows that the features calculated by the absolute magnitude of the samples actually lessen the accuracy in some cases. The prediction rate of the \gls{knn} and the \gls{rbf} \gls{svm} is higher, when the algorithm is trained with only the horizontal and the vertical components of the features.
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{@{}lccccc@{}}
+        \toprule
+        Components & absolute & horizontal & vertical & \begin{tabular}[c]{@{}c@{}}horizontal \&\\ vertical\end{tabular} & all \\
+        \midrule
+        \gls{knn} & 75.00\% & 73.55\% & 72.83\% & 85.14\% & 81.52\% \\
+        \gls{svm} & 77.90\% & 82.61\% & 59.06\% & 86.23\% & 88.04\% \\
+        \gls{rbf} & 79.35\% & 83.70\% & 70.29\% & 85.51\% & 84.42\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{Feature Components}
+    \label{table:components}
+\end{table}
+
+    
+\subsubsection{Analyzing Activities}
+Seven different activities have been chosen and classified during this experiment. They are cycling (c), going upstairs (u), going downstairs (d), jumping (j), relaxing (re), running (ru) and walking (w). Until now every time the prediction probability or accuracy has been mentioned, the overall accuracy was referred to. This chapter will now take a look at how good each individual activity can be predicted.
+
+The confusion matrices reflect the results of the previous examinations. The activities are predicted very accurately, with only running being the one that has problems during classification. All three algorithms classified approximately 50\% of running samples as though they represent relaxing.
+
+As shown in table \ref{table:confusion-knn}, \ref{table:confusion-svm} and \ref{table:confusion-rbf}, the accuracy of the \gls{knn} was 83\%, the linear \gls{svm} reached 85\% and the \gls{rbf} yielded 88\%. By removing either running or relaxing from the pool of examined activities, the accuracy is drastically improved. The confusion between running and relaxing was the main reason for lower overall accuracy. When the data set is reduced to these 6 activities, the accuracy increases to 91\% for the \gls{knn}, to 95\% for the linear \gls{svm} and even up to 98\% for the \gls{rbf}.
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{@{}llcccccccc@{}}
+        \toprule
+         &  & \multicolumn{7}{c}{Predicted Activity} & \\
+         &  & \multicolumn{1}{l}{c} & \multicolumn{1}{l}{d} & \multicolumn{1}{l}{u} & \multicolumn{1}{l}{j} & \multicolumn{1}{l}{re} & \multicolumn{1}{l}{ru} & \multicolumn{1}{l}{w} & \\
+        \midrule
+        \multirow{7}{*}{\rotatebox[]{90}{Expected Activity}} & \multicolumn{1}{l}{c} & \multicolumn{1}{c}{84} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{d} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{19} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{3} & 79.17\% \\
+         & \multicolumn{1}{l}{u} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{25} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{1} & 96.15\% \\
+         & \multicolumn{1}{l}{j} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{36} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{re} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{24} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{ru} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{28} & \multicolumn{1}{c}{26} & \multicolumn{1}{c}{0} & 46.43\% \\
+         & \multicolumn{1}{l}{w} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{8} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{17} & 65.38\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{\gls{knn} - Confusion Matrix}
+    \label{table:confusion-knn}
+\end{table}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{@{}llcccccccc@{}}
+        \toprule
+         &  & \multicolumn{7}{c}{Predicted Activity} & \\
+         &  & \multicolumn{1}{l}{c} & \multicolumn{1}{l}{d} & \multicolumn{1}{l}{u} & \multicolumn{1}{l}{j} & \multicolumn{1}{l}{re} & \multicolumn{1}{l}{ru} & \multicolumn{1}{l}{w} & \\
+        \midrule
+        \multirow{7}{*}{\rotatebox[]{90}{Expected Activity}} & \multicolumn{1}{l}{c} & \multicolumn{1}{c}{75} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{0} & 89.29\% \\
+         & \multicolumn{1}{l}{d} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{24} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{u} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{26} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{j} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{36} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{re} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{24} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{ru} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{28} & \multicolumn{1}{c}{26} & \multicolumn{1}{c}{0} & 46.43\% \\
+         & \multicolumn{1}{l}{w} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{24} & 92.31\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{Linear \gls{svm} - Confusion Matrix}
+    \label{table:confusion-svm}
+\end{table}
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{@{}llcccccccc@{}}
+        \toprule
+         &  & \multicolumn{7}{c}{Predicted Activity} & \\
+         &  & \multicolumn{1}{l}{c} & \multicolumn{1}{l}{d} & \multicolumn{1}{l}{u} & \multicolumn{1}{l}{j} & \multicolumn{1}{l}{re} & \multicolumn{1}{l}{ru} & \multicolumn{1}{l}{w} & \\
+        \midrule
+        \multirow{7}{*}{\rotatebox[]{90}{Expected Activity}} & \multicolumn{1}{l}{c} & \multicolumn{1}{c}{82} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{0} & 97.62\% \\
+         & \multicolumn{1}{l}{d} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{24} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{u} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{26} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{j} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{36} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{re} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{24} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & 100\% \\
+         & \multicolumn{1}{l}{ru} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{28} & \multicolumn{1}{c}{26} & \multicolumn{1}{c}{0} & 46.43\% \\
+         & \multicolumn{1}{l}{w} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{0} & \multicolumn{1}{c}{26} & 100\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{\gls{rbf} - Confusion Matrix}
+    \label{table:confusion-rbf}
+\end{table}
+
+\pagebreak
+
+\subsection{Summary}
+In the end, all three classification algorithms yield very good results, but there is a lot of work to do before getting there.
+
+First the right configuration needs to be found for each algorithm. This is done through experimentation, finding out which parameter work best and through trial and error. This has been a never ending process, since newly revealed subtleties during the experiment have led to changing and trying out new parameters in an effort to optimize the setup and the algorithms.
+
+The next step is the preparation of the data set for feature extraction. The question arises which data set is best suited and how much information each feature vector should contain. It quickly becomes apparent, that the data collected by the accelerometer in the trouser pocket is best suited, since distinct movements can be recognized and recorded. The question of the optimal cluster size is more difficult to answer. The results propose choosing a cluster size as big as possible, as this would lead to the highest accuracy. In reality a person is not necessarily going to enact an activity for more than a few seconds. Therefore it is not feasible to generate features containing ten or more seconds worth of data. With this in mind, the remaining parts of the experiment have been performed with a cluster size of 256.
+
+The last step is selecting the right combination of features. While it looks like all features mentioned in chapter \ref{section:features} improve the accuracy of the prediction, the main improvement to be made is separating the data into its horizontal and vertical component. This way the directional information contained inside the acceleration samples is not lost but instead emphasized.
+
+All this work has led to the prediction probabilities shown in table \ref{table:final}, which were mostly influenced by the classification algorithm and the cluster size. Overall the \gls{svm} with a \gls{rbf} kernel works best in the end by reaching an accuracy of 98\%, but both \gls{knn} and the linear \gls{svm} are pretty accurate too. The \gls{knn} algorithm has been especially consistent throughout all the tests, even though it has not always yielded the highest results.
+
+\begin{table}[!htb]
+    \centering
+    \begin{tabular}{@{}cccc@{}}
+        \toprule
+        Cluster Size & \gls{knn} & Linear \gls{svm} & \gls{rbf} \\
+        \midrule
+        256 & 91.07\% & 88.39\% & 95.09\% \\
+        512 & 91.82\% & 95.45\% & 98.64\% \\
+        \bottomrule
+    \end{tabular}
+    \caption{Final Prediction Accuracy}
+    \label{table:final}
+\end{table}
