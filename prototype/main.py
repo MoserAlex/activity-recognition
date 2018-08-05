@@ -60,7 +60,7 @@ activities = [
   Activities.CLIMB_DOWN,
   Activities.CLIMB_UP,
   Activities.JUMP,
-  # Activities.RELAX,
+  Activities.RELAX,
   Activities.RUN,
   Activities.WALK,
   # Activities.WALK_BACK,
@@ -92,8 +92,8 @@ sensor_positions = [
 ]
 clusters_size = [
   # 64,
-  256,
-  # 512,
+  # 256,
+  512,
   # 1024,
   # 2048,
 ]

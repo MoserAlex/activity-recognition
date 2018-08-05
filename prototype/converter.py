@@ -87,9 +87,9 @@ def __write_feature_file(path: str, data: list, targets: list):
 
 cluster_sizes = [
   # 64,
-  256,
+  # 256,
   512,
-  1024,
-  2048,
+  # 1024,
+  # 2048,
 ]
 start(cluster_sizes)
