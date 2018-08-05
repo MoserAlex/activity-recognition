@@ -1,10 +1,7 @@
 # Custom
-*.rar
 .vscode/
 DataSets/
 FeatureSets/
-Reports/
-Test/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

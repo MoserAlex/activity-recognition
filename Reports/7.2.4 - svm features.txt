@@ -1,0 +1,78 @@
+Report - 2018.08.04 03:46:04
+
+The machine is trained with the data of 43 training subjects.
+The activities of test subject 6 are being classified.
+
+The sensor is positioned at the Trousers Pocket.
+
+The following Activities are being classified:
+  Bicycling
+  Climbing Downstairs
+  Climbing Upstairs
+  Jump 45 Seconds
+  Releax
+  Run 100M
+  Walking 50M
+
+The features were calculated from clusters of size 512 of raw acceleration data.
+Of the following Features the absolute, horizontal and vertical components are used for comparison:
+  Max Amplitude
+  Min Amplitude
+  Variance
+  Standard Deviation
+  Hjorth Mobility
+
+
+Training:
+  Reading feature files
+   - finished in 5.89 seconds
+
+  Start Training
+    Decision Tree          time = 0.03 seconds
+    K-Nearest Neighbor
+      1. knn: k = 11       time = 0.02 seconds
+      2. knn: k = 13       time = 0.01 seconds
+      3. knn: k = 15       time = 0.01 seconds
+    SVM with Linear Kernel time = 0.92 seconds
+    SVM with RBF Kernel
+      1. rbf:              time = 0.77 seconds C = 1  gamma = 0.1
+      2. rbf:              time = 1.05 seconds C = 1  gamma = 1
+      3. rbf:              time = 0.70 seconds C = 100.0  gamma = 0.1
+      4. rbf:              time = 1.14 seconds C = 100.0  gamma = 1
+  End Training
+   - finished in 4.72 seconds
+
+  Start Cross Validation
+    Accuracy:
+      Decision Tree:      51.21%
+      K-Nearest Neigbor:
+        1. knn:           91.62%  k = 11
+        2. knn:           90.68%  k = 13
+        3. knn:           90.47%  k = 15
+      Linear SVM:         81.41%
+      RBF SVM:
+        1. rbf:           86.73%  C = 1  gamma = 0.1
+        2. rbf:           92.85%  C = 1  gamma = 1
+        3. rbf:           93.19%  C = 100.0  gamma = 0.1
+        4. rbf:           95.28%  C = 100.0  gamma = 1
+  End Cross Validation
+
+
+Classification:
+  Reading feature files
+   - finished in 0.19 seconds
+
+  Start Classification
+    Accuracy:
+      Decision Tree:      54.71%
+      K-Nearest Neigbor:
+        1. knn:           77.54%  k = 11
+        2. knn:           77.17%  k = 13
+        3. knn:           77.17%  k = 15
+      Linear SVM:         80.07%
+      RBF SVM:
+        1. rbf:           80.43%  C = 1  gamma = 0.1
+        2. rbf:           79.35%  C = 1  gamma = 1
+        3. rbf:           79.71%  C = 100.0  gamma = 0.1
+        4. rbf:           76.81%  C = 100.0  gamma = 1
+  End Classification

@@ -6,17 +6,17 @@ import file_reading as reader
 from enums.sensorPosition import SensorPosition
 
 def start(cluster_sizes=list()):
-  if len(cluster_sizes) == 0:    
+  if len(cluster_sizes) == 0:
     start_conversion(SensorPosition.CLOTH_POCKET)
     start_conversion(SensorPosition.TROUSERS_POCKET)
     start_conversion(SensorPosition.WAIST)
   else:
-    for fftsize in cluster_sizes:      
+    for fftsize in cluster_sizes:
       start_conversion(SensorPosition.CLOTH_POCKET, fftsize)
       start_conversion(SensorPosition.TROUSERS_POCKET, fftsize)
       start_conversion(SensorPosition.WAIST, fftsize)
 
-def start_conversion(sensor_position, cluster_size=256):    
+def start_conversion(sensor_position, cluster_size=256):
   print('Converting data files - {}'.format(sensor_position.value))
   reader.setup(
     sensor_position=sensor_position
@@ -26,7 +26,7 @@ def start_conversion(sensor_position, cluster_size=256):
   convert_data_to_feature_file('DataSets', writepath, cluster_size, skip_existing_files=True)
   print(' - finished in {0:.2f} seconds\n'.format(time.time()-start))
 
-def convert_data_to_feature_file(data_root: str, write_directory: str, cluster_size, skip_existing_files=False):  
+def convert_data_to_feature_file(data_root: str, write_directory: str, cluster_size, skip_existing_files=False):
   subjects = __getFileNames(data_root)
 
   feature_root = 'FeatureSets'
@@ -86,7 +86,7 @@ def __write_feature_file(path: str, data: list, targets: list):
       writer.writerow(row)
 
 cluster_sizes = [
-  64,
+  # 64,
   256,
   512,
   1024,

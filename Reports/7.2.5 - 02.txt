@@ -1,0 +1,104 @@
+Report - 2018.08.04 05:51:58
+
+The machine is trained with the data of 43 training subjects.
+The activities of test subject 11 are being classified.
+
+The sensor is positioned at the Trousers Pocket.
+
+The following Activities are being classified:
+  Bicycling
+  Climbing Downstairs
+  Climbing Upstairs
+  Jump 45 Seconds
+  Releax
+  Walking 50M
+
+The features were calculated from clusters of size 512 of raw acceleration data.
+Of the following Features the horizontal and vertical components are used for comparison:
+  Mean Amplitude
+  Max Amplitude
+  Min Amplitude
+  Variance
+  Standard Deviation
+
+
+Training:
+  Reading feature files
+   - finished in 5.55 seconds
+
+  Start Training
+    Decision Tree          time = 0.02 seconds
+    K-Nearest Neighbor
+      1. knn: k = 13       time = 0.00 seconds
+    SVM with Linear Kernel time = 0.56 seconds
+    SVM with RBF Kernel
+      1. rbf:              time = 0.43 seconds C = 100.0  gamma = 0.1
+  End Training
+   - finished in 1.06 seconds
+
+  Start Cross Validation
+    Accuracy:
+      Decision Tree:      49.76%
+      K-Nearest Neigbor:
+        1. knn:           91.92%  k = 13
+[[544   1   7   2   5   4]
+ [  1 260  35   2   6  14]
+ [  1  20 309   2   0  20]
+ [  0   5   0 327   0   0]
+ [ 11   0   2   0 193   0]
+ [  4   4  19   1   1 268]]
+
+      Linear SVM:         81.09%
+[[520   7   9   0  11  16]
+ [ 25 214  57   1   7  14]
+ [ 45  41 209   1   1  55]
+ [  0   7   0 325   0   0]
+ [  4   1   0   0 201   0]
+ [ 15  19  53   0   2 208]]
+
+      RBF SVM:
+        1. rbf:           94.05%  C = 100.0  gamma = 0.1
+[[554   0   3   0   4   2]
+ [  2 277  26   3   7   3]
+ [  2  18 307   0   2  23]
+ [  0   1   1 330   0   0]
+ [  3   0   0   0 203   0]
+ [  3   1  18   0   1 274]]
+
+  End Cross Validation
+
+
+Classification:
+  Reading feature files
+   - finished in 0.14 seconds
+
+  Start Classification
+    Accuracy:
+      Decision Tree:      67.29%
+      K-Nearest Neigbor:
+        1. knn:           92.52%  k = 13
+[[96  0  0  2  0  0]
+ [ 0 15  1  0  0  4]
+ [ 0  0 20  0  0  0]
+ [ 0  0  0 32  0  0]
+ [ 0  0  0  0 20  0]
+ [ 0  5  4  0  0 15]]
+
+      Linear SVM:         89.25%
+[[94  2  0  0  2  0]
+ [ 0 20  0  0  0  0]
+ [ 0 15  3  2  0  0]
+ [ 0  0  0 32  0  0]
+ [ 0  0  0  0 20  0]
+ [ 0  0  2  0  0 22]]
+
+      RBF SVM:
+        1. rbf:           98.60%  C = 100.0  gamma = 0.1
+[[96  0  0  0  2  0]
+ [ 0 20  0  0  0  0]
+ [ 0  1 19  0  0  0]
+ [ 0  0  0 32  0  0]
+ [ 0  0  0  0 20  0]
+ [ 0  0  0  0  0 24]]
+
+  End Classification

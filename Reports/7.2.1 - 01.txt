@@ -1,0 +1,109 @@
+Report - 2018.08.03 05:34:50
+
+The machine is trained with the data of 43 training subjects.
+The activities of test subject 6 are being classified.
+
+The sensor is positioned at the Cloth Pocket.
+
+The following Activities are being classified:
+  Bicycling
+  Climbing Downstairs
+  Climbing Upstairs
+  Jump 45 Seconds
+  Releax
+  Run 100M
+  Walking 50M
+
+The features were calculated from clusters of size 256 of raw acceleration data.
+Of the following Features the absolute, horizontal and vertical components are used for comparison:
+  Mean Amplitude
+  Max Amplitude
+  Min Amplitude
+  Variance
+  Standard Deviation
+  Energy Amplitude
+  Short Time Fourier Transformation
+  Hjorth Mobility
+  Hjorth Complexity
+
+
+Training:
+  Reading feature files
+   - finished in 12.68 seconds
+
+  Start Training
+    Decision Tree          time = 0.10 seconds
+    K-Nearest Neighbor
+      1. knn: k = 3        time = 0.04 seconds
+      2. knn: k = 5        time = 0.06 seconds
+      3. knn: k = 7        time = 0.05 seconds
+      4. knn: k = 9        time = 0.04 seconds
+      5. knn: k = 11       time = 0.04 seconds
+      6. knn: k = 13       time = 0.05 seconds
+      7. knn: k = 15       time = 0.04 seconds
+    SVM with Linear Kernel time = 4.76 seconds
+    SVM with RBF Kernel
+      1. rbf:              time = 12.47 seconds C = 0.01  gamma = 0.1
+      2. rbf:              time = 19.63 seconds C = 0.01  gamma = 1
+      3. rbf:              time = 24.94 seconds C = 0.01  gamma = 10.0
+      4. rbf:              time = 4.59 seconds C = 1  gamma = 0.1
+      5. rbf:              time = 6.18 seconds C = 1  gamma = 1
+      6. rbf:              time = 25.94 seconds C = 1  gamma = 10.0
+      7. rbf:              time = 3.24 seconds C = 100.0  gamma = 0.1
+      8. rbf:              time = 5.93 seconds C = 100.0  gamma = 1
+      9. rbf:              time = 30.27 seconds C = 100.0  gamma = 10.0
+  End Training
+   - finished in 138.52 seconds
+
+  Start Cross Validation
+    Accuracy:
+      Decision Tree:      57.99%
+      K-Nearest Neigbor:
+        1. rbf:           90.73%  k = 3
+        2. rbf:           90.31%  k = 5
+        3. rbf:           89.68%  k = 7
+        4. rbf:           89.16%  k = 9
+        5. rbf:           88.72%  k = 11
+        6. rbf:           88.23%  k = 13
+        7. rbf:           87.77%  k = 15
+      Linear SVM:         83.79%
+      RBF SVM:
+        1. rbf:           64.24%  C = 0.01  gamma = 0.1
+        2. rbf:           57.78%  C = 0.01  gamma = 1
+        3. rbf:           26.51%  C = 0.01  gamma = 10.0
+        4. rbf:           87.63%  C = 1  gamma = 0.1
+        5. rbf:           92.53%  C = 1  gamma = 1
+        6. rbf:           83.68%  C = 1  gamma = 10.0
+        7. rbf:           92.93%  C = 100.0  gamma = 0.1
+        8. rbf:           95.01%  C = 100.0  gamma = 1
+        9. rbf:           85.28%  C = 100.0  gamma = 10.0
+  End Cross Validation
+
+
+Classification:
+  Reading feature files
+   - finished in 0.37 seconds
+
+  Start Classification
+    Accuracy:
+      Decision Tree:      49.62%
+      K-Nearest Neigbor:
+        1. rbf:           58.17%  k = 3
+        2. rbf:           59.32%  k = 5
+        3. rbf:           59.70%  k = 7
+        4. rbf:           60.65%  k = 9
+        5. rbf:           60.27%  k = 11
+        6. rbf:           61.03%  k = 13
+        7. rbf:           60.08%  k = 15
+      Linear SVM:         73.19%
+      RBF SVM:
+        1. rbf:           52.09%  C = 0.01  gamma = 0.1
+        2. rbf:           38.97%  C = 0.01  gamma = 1
+        3. rbf:           29.28%  C = 0.01  gamma = 10.0
+        4. rbf:           69.20%  C = 1  gamma = 0.1
+        5. rbf:           63.88%  C = 1  gamma = 1
+        6. rbf:           39.73%  C = 1  gamma = 10.0
+        7. rbf:           70.34%  C = 100.0  gamma = 0.1
+        8. rbf:           64.83%  C = 100.0  gamma = 1
+        9. rbf:           40.49%  C = 100.0  gamma = 10.0
+  End Classification

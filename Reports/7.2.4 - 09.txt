@@ -1,0 +1,74 @@
+Report - 2018.08.03 23:05:22
+
+The machine is trained with the data of 43 training subjects.
+The activities of test subject 6 are being classified.
+
+The sensor is positioned at the Trousers Pocket.
+
+The following Activities are being classified:
+  Bicycling
+  Climbing Downstairs
+  Climbing Upstairs
+  Jump 45 Seconds
+  Releax
+  Run 100M
+  Walking 50M
+
+The features were calculated from clusters of size 512 of raw acceleration data.
+Of the following Features the absolute, horizontal and vertical components are used for comparison:
+  Hjorth Complexity
+
+
+Training:
+  Reading feature files
+   - finished in 4.22 seconds
+
+  Start Training
+    Decision Tree          time = 0.00 seconds
+    K-Nearest Neighbor
+      1. knn: k = 11       time = 0.01 seconds
+      2. knn: k = 13       time = 0.01 seconds
+      3. knn: k = 15       time = 0.01 seconds
+    SVM with Linear Kernel time = 0.70 seconds
+    SVM with RBF Kernel
+      1. rbf:              time = 1.30 seconds C = 1  gamma = 0.1
+      2. rbf:              time = 1.12 seconds C = 1  gamma = 1
+      3. rbf:              time = 1.09 seconds C = 100.0  gamma = 0.1
+      4. rbf:              time = 1.14 seconds C = 100.0  gamma = 1
+  End Training
+   - finished in 5.41 seconds
+
+  Start Cross Validation
+    Accuracy:
+      Decision Tree:      51.51%
+      K-Nearest Neigbor:
+        1. knn:           52.74%  k = 11
+        2. knn:           53.38%  k = 13
+        3. knn:           53.04%  k = 15
+      Linear SVM:         48.06%
+      RBF SVM:
+        1. rbf:           46.45%  C = 1  gamma = 0.1
+        2. rbf:           49.72%  C = 1  gamma = 1
+        3. rbf:           52.66%  C = 100.0  gamma = 0.1
+        4. rbf:           54.02%  C = 100.0  gamma = 1
+  End Cross Validation
+
+
+Classification:
+  Reading feature files
+   - finished in 0.12 seconds
+
+  Start Classification
+    Accuracy:
+      Decision Tree:      48.19%
+      K-Nearest Neigbor:
+        1. knn:           49.64%  k = 11
+        2. knn:           50.00%  k = 13
+        3. knn:           50.00%  k = 15
+      Linear SVM:         46.74%
+      RBF SVM:
+        1. rbf:           52.17%  C = 1  gamma = 0.1
+        2. rbf:           47.10%  C = 1  gamma = 1
+        3. rbf:           54.35%  C = 100.0  gamma = 0.1
+        4. rbf:           55.07%  C = 100.0  gamma = 1
+  End Classification

@@ -60,7 +60,7 @@ activities = [
   Activities.CLIMB_DOWN,
   Activities.CLIMB_UP,
   Activities.JUMP,
-  Activities.RELAX,
+  # Activities.RELAX,
   Activities.RUN,
   Activities.WALK,
   # Activities.WALK_BACK,
@@ -76,43 +76,38 @@ features = [
   Features.VARIANCE,
   Features.STANDARD_DEVIATION,
   # Features.ENERGY_AMPLITUDE,
-  Features.STFT_AMPLITUDE,
+  # Features.STFT_AMPLITUDE,
   # Features.HJORTH_MOBILITY,
   # Features.HJORTH_COMPLEXITY,
 
   # # if these are specified, only the corresponding value of each feature will be used.
-  Features.absolute,
+  # Features.absolute,
   Features.horizontal,
   Features.vertical,
 ]
-positions = [
+sensor_positions = [
   # SensorPosition.CLOTH_POCKET,
   SensorPosition.TROUSERS_POCKET,
   # SensorPosition.WAIST
 ]
-clusters = [
+clusters_size = [
   # 64,
-  # 256,
-  512,
+  256,
+  # 512,
   # 1024,
   # 2048,
 ]
-subjects = [
+nr_of_subjects = [
   # 1,
   # 5,
   # 10,
   # 20,
   44,
 ]
-test_subject = 5
+test_subject = 10
 
 # Here the execution of the main code starts
-for p in positions:
-  for c in clusters:
-    for s in subjects:
+for p in sensor_positions:
+  for c in clusters_size:
+    for s in nr_of_subjects:
       start(s, test_subject, activities, features, p, c)
-
-      # for f in features:
-      #   if f != Features.absolute and f != Features.horizontal and f != Features.vertical:
-      #     feats = [f, Features.absolute, Features.horizontal, Features.vertical]
-      #     start(s, test_subject, activities, feats, p, c)

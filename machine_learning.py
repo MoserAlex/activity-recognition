@@ -72,7 +72,8 @@ def __train_knn(X_train: list, y_train: list):
   report.add('K-Nearest Neighbor', indentation=2)
   start = time.time()
 
-  neighbors = [11, 13, 15]
+  neighbors = [13]
+  # neighbors = [11, 13, 15]
   classifiers = list()
   for i, k in enumerate(neighbors):
     print('      {}. knn:  k = {}'.format(i + 1, k), end = '', flush=True)
@@ -113,8 +114,10 @@ def __train_linear_svm(X_train: list, y_train: list):
 def __train_rbf_svm(X_train: list, y_train: list):
   report.add('SVM with RBF Kernel', indentation=2)
 
-  C_2d_range = [1, 1e2]
-  gamma_2d_range = [1e-1, 1]
+  C_2d_range = [1e2]
+  gamma_2d_range = [1e-1]
+  # C_2d_range = [1, 1e2]
+  # gamma_2d_range = [1e-1, 1]
   classifiers = list()
   for C in C_2d_range:
     for gamma in gamma_2d_range:
@@ -156,26 +159,26 @@ def __test_knn(X_test, targets):
     for i, classifier in enumerate(g_knn):
       accuracy = classifier.score(X_test, targets) * 100
 
-      # report.add('K-Nearest Neighbor: {0:.2f}%'.format(accuracy), indentation=3)
-
-      # prediction = g_knn.predict(X_test)
-      # con_matrix = confusion_matrix(targets, prediction)
-
+      prediction = classifier.predict(X_test)
+      con_matrix = confusion_matrix(targets, prediction)
 
       msg = '{}. knn:           '.format(i + 1)
       msg = msg + '{0:.2f}% '.format(accuracy)
       msg = msg + ' k = {}'.format(classifier.n_neighbors)
 
       report.add(msg, indentation=4)
+      report.add_confusion_matrix(con_matrix, indentation=4)
 
 def __test_linear_svm(X_test, targets):
   if g_linear_svm is not None:
     accuracy = g_linear_svm.score(X_test, targets) * 100
 
-    report.add('Linear SVM:         {0:.2f}%'.format(accuracy), indentation=3)
+    prediction = g_linear_svm.predict(X_test)
+    con_matrix = confusion_matrix(targets, prediction)
 
-    # prediction = g_linear_svm.predict(X_test)
-    # con_matrix = confusion_matrix(targets, prediction)
+    report.add('Linear SVM:         {0:.2f}%'.format(accuracy), indentation=3)
+    report.add_confusion_matrix(con_matrix, indentation=3)
+
 
 def __test_rbf_svm(X_test, targets):
   if len(g_rbf_svm) is not 0:
@@ -184,11 +187,13 @@ def __test_rbf_svm(X_test, targets):
     for i, classifier in enumerate(g_rbf_svm):
       accuracy = classifier.score(X_test, targets) * 100
 
+      prediction = classifier.predict(X_test)
+      con_matrix = confusion_matrix(targets, prediction)
+
       msg = '{}. rbf:           '.format(i + 1)
       msg = msg + '{0:.2f}% '.format(accuracy)
       msg = msg + ' C = {}  gamma = {}'.format(classifier.C, classifier.gamma)
 
       report.add(msg, indentation=4)
+      report.add_confusion_matrix(con_matrix, indentation=4)
 
-      # prediction = classifier.predict(X_test)
-      # con_matrix = confusion_matrix(targets, prediction)

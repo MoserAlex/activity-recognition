@@ -1,0 +1,111 @@
+Report - 2018.08.04 05:26:41
+
+The machine is trained with the data of 43 training subjects.
+The activities of test subject 6 are being classified.
+
+The sensor is positioned at the Trousers Pocket.
+
+The following Activities are being classified:
+  Bicycling
+  Climbing Downstairs
+  Climbing Upstairs
+  Jump 45 Seconds
+  Releax
+  Run 100M
+  Walking 50M
+
+The features were calculated from clusters of size 512 of raw acceleration data.
+Of the following Features the horizontal and vertical components are used for comparison:
+  Mean Amplitude
+  Max Amplitude
+  Min Amplitude
+  Variance
+  Standard Deviation
+
+
+Training:
+  Reading feature files
+   - finished in 6.00 seconds
+
+  Start Training
+    Decision Tree          time = 0.02 seconds
+    K-Nearest Neighbor
+      1. knn: k = 13       time = 0.03 seconds
+    SVM with Linear Kernel time = 0.85 seconds
+    SVM with RBF Kernel
+      1. rbf:              time = 0.60 seconds C = 100.0  gamma = 0.1
+  End Training
+   - finished in 1.54 seconds
+
+  Start Cross Validation
+    Accuracy:
+      Decision Tree:      44.32%
+      K-Nearest Neigbor:
+        1. knn:           90.68%  k = 13
+[[606   6   4   1   4   0   2]
+ [  2 259  22   1   8   5  15]
+ [  4  45 279   1   0   6  21]
+ [  2   3   0 295   0   4   0]
+ [  3   2   1   1 201   9   1]
+ [  1   5   7   3   4 240   4]
+ [  2   7  11   0   1   1 252]]
+
+      Linear SVM:         80.22%
+[[594   5   5   0   8   0  11]
+ [ 20 213  50   1  13   3  12]
+ [ 49  41 184   1   2  12  67]
+ [  2   9   0 285   0   8   0]
+ [  8   0   0   0 209   1   0]
+ [ 14   9  12   7  18 200   4]
+ [ 17  12  44   0   0   0 201]]
+
+      RBF SVM:
+        1. rbf:           93.07%  C = 100.0  gamma = 0.1
+[[618   0   0   0   4   1   0]
+ [  1 265  26   1  12   3   4]
+ [  6  28 287   0   1   4  30]
+ [  2   0   0 301   0   1   0]
+ [  1   1   0   0 213   3   0]
+ [  2   3   6   0  11 241   1]
+ [  1   1   7   0   1   1 263]]
+
+  End Cross Validation
+
+
+Classification:
+  Reading feature files
+   - finished in 0.17 seconds
+
+  Start Classification
+    Accuracy:
+      Decision Tree:      52.17%
+      K-Nearest Neigbor:
+        1. knn:           83.70%  k = 13
+[[84  0  0  0  0  0  0]
+ [ 0 19  2  0  0  0  3]
+ [ 0  0 25  0  0  0  1]
+ [ 0  0  0 36  0  0  0]
+ [ 0  0  0  0 24  0  0]
+ [ 0  0  2  0 28 26  0]
+ [ 0  8  1  0  0  0 17]]
+
+      Linear SVM:         85.14%
+[[75  0  2  0  2  5  0]
+ [ 0 24  0  0  0  0  0]
+ [ 0  0 26  0  0  0  0]
+ [ 0  0  0 36  0  0  0]
+ [ 0  0  0  0 24  0  0]
+ [ 0  0  2  0 28 26  0]
+ [ 0  0  2  0  0  0 24]]
+
+      RBF SVM:
+        1. rbf:           88.41%  C = 100.0  gamma = 0.1
+[[82  0  0  0  0  2  0]
+ [ 0 24  0  0  0  0  0]
+ [ 0  0 26  0  0  0  0]
+ [ 0  0  0 36  0  0  0]
+ [ 0  0  0  0 24  0  0]
+ [ 0  0  2  0 28 26  0]
+ [ 0  0  0  0  0  0 26]]
+
+  End Classification

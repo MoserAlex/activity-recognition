@@ -1,0 +1,82 @@
+Report - 2018.08.04 00:17:18
+
+The machine is trained with the data of 43 training subjects.
+The activities of test subject 6 are being classified.
+
+The sensor is positioned at the Waist.
+
+The following Activities are being classified:
+  Bicycling
+  Climbing Downstairs
+  Climbing Upstairs
+  Jump 45 Seconds
+  Releax
+  Run 100M
+  Walking 50M
+
+The features were calculated from clusters of size 256 of raw acceleration data.
+Of the following Features the absolute, horizontal and vertical components are used for comparison:
+  Mean Amplitude
+  Max Amplitude
+  Min Amplitude
+  Variance
+  Standard Deviation
+  Energy Amplitude
+  Short Time Fourier Transformation
+  Hjorth Mobility
+  Hjorth Complexity
+
+
+Training:
+  Reading feature files
+   - finished in 9.08 seconds
+
+  Start Training
+    Decision Tree          time = 0.08 seconds
+    K-Nearest Neighbor
+      1. knn: k = 11       time = 0.03 seconds
+      2. knn: k = 13       time = 0.03 seconds
+      3. knn: k = 15       time = 0.03 seconds
+    SVM with Linear Kernel time = 3.21 seconds
+    SVM with RBF Kernel
+      1. rbf:              time = 3.09 seconds C = 1  gamma = 0.1
+      2. rbf:              time = 3.64 seconds C = 1  gamma = 1
+      3. rbf:              time = 2.24 seconds C = 100.0  gamma = 0.1
+      4. rbf:              time = 3.45 seconds C = 100.0  gamma = 1
+  End Training
+   - finished in 15.91 seconds
+
+  Start Cross Validation
+    Accuracy:
+      Decision Tree:      59.18%
+      K-Nearest Neigbor:
+        1. knn:           89.94%  k = 11
+        2. knn:           89.41%  k = 13
+        3. knn:           88.87%  k = 15
+      Linear SVM:         84.47%
+      RBF SVM:
+        1. rbf:           86.75%  C = 1  gamma = 0.1
+        2. rbf:           92.09%  C = 1  gamma = 1
+        3. rbf:           92.17%  C = 100.0  gamma = 0.1
+        4. rbf:           94.49%  C = 100.0  gamma = 1
+  End Cross Validation
+
+
+Classification:
+  Reading feature files
+   - finished in 0.25 seconds
+
+  Start Classification
+    Accuracy:
+      Decision Tree:      57.03%
+      K-Nearest Neigbor:
+        1. knn:           60.65%  k = 11
+        2. knn:           61.41%  k = 13
+        3. knn:           61.60%  k = 15
+      Linear SVM:         84.41%
+      RBF SVM:
+        1. rbf:           74.90%  C = 1  gamma = 0.1
+        2. rbf:           75.48%  C = 1  gamma = 1
+        3. rbf:           80.61%  C = 100.0  gamma = 0.1
+        4. rbf:           78.52%  C = 100.0  gamma = 1
+  End Classification

@@ -36,6 +36,10 @@ def add(line='', indentation=0, end='\n', flush=False, in_console=True):
 
   g_report_text += indent + line + end
 
+def add_confusion_matrix(matrix, indentation=0):
+  global g_report_text
+  g_report_text += str(matrix) + '\n\n'
+
 # ------------------------------------------------------------- #
 #                                                               #
 #                            Utility                            #
